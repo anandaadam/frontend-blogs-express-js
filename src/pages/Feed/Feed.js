@@ -52,7 +52,11 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch(`http://localhost:3001/feed/posts?page=${page}`)
+    fetch(`http://localhost:3001/feed/posts?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${this.props.token}`,
+      },
+    })
       .then((res) => {
         if (res.status !== 200) {
           throw new Error("Failed to fetch posts.");
@@ -124,9 +128,9 @@ class Feed extends Component {
 
     fetch(url, {
       method: method,
-      // headers: {
-      //   "Content-Type": "application/json",
-      // },
+      headers: {
+        Authorization: `Bearer ${this.props.token}`,
+      },
       body: formData,
     })
       .then((res) => {
@@ -180,6 +184,9 @@ class Feed extends Component {
   deletePostHandler = (postId) => {
     this.setState({ postsLoading: true });
     fetch(`http://localhost:3001/feed/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${this.props.token}`,
+      },
       method: "DELETE",
     })
       .then((res) => {
